@@ -1,0 +1,106 @@
+extends layout
+
+block content
+    -data = data || {}
+
+    if errors
+        ul.my-errors
+            for error in errors
+                li= error.msg
+
+    li.nav-item
+        a.nav-link(href='/login') Login 
+
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
+    
+
+    form(action="/register", method="POST" class="form-registration" enctype = "multipart/form-data")
+
+        label(for="username") Username:
+        input(
+            type="text"
+            id="username"
+            name="username"
+            required
+            class="form-control"
+            value=data.username 
+        )
+
+        label(for="name") Name:
+        input(
+            type="text"
+            id="name"
+            name="name"
+            required
+            class="form-control"
+            value=data.name 
+        )
+
+        label(for="firstLastName") FirstLastName:
+        input(
+            type="text"
+            id="firstLastName"
+            name="firstLastName"
+            required
+            class="form-control"
+            value=data.firstLastName
+        )
+        
+        label(for="secondLastName") SecondLastName:
+        input(
+            type="text"
+            id="secondLastName"
+            name="secondLastName"
+            class="form-control"
+            value=data.secondLastName
+        )
+
+        label(for="email") Email:
+        input(
+            type="email"
+            id="email"
+            name="email"
+            required
+            class="form-control"
+            value=data.email
+        )
+      
+        label(for="password") Password:
+        input(
+            type="password"
+            id="password"
+            name="password"
+            required
+            class="form-control"
+            value=data.password
+        )
+
+        label(for="confirmPassword") Confirm Password:
+        input(
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+            class="form-control"
+            value=data.password
+        )
+        label(for="date") Date:
+        input(type="date"
+              id="birthday"
+              name="birthday"
+              required
+              class="form-control"
+              value=data.birthday
+              )
+        script.
+            (function() {
+                $('#submit').on('click', function(){
+                    var date = (new Date($('#date-input').val())).toISOString();
+                    day = date.getDate();
+                    month = date.getMonth() + 1;
+                    year = date.getFullYear();
+                    alert([day, month, year].join('/'));
+                    });
+                })();
+        
+        input(type="submit" value="Register" class="btn-lg btn-primary btn-block")

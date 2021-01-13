@@ -8,13 +8,13 @@ const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const { db } = require('./models/User');
+//const { db } = require('./models/User');
 const { Http2ServerRequest } = require('http2');
 
 //App used-passport
 const app = express();
 app.set('port', process.env.PORT || 3000);
-require('./config/passport')
+//require('./config/passport')
 
 //View Engine
 app.set('views', path.join(__dirname, 'views'));
@@ -47,7 +47,6 @@ app.use((req,  res,  next) => {
 });
 
 
-app.use(require('./routes/user.routes'));
-app.use(require('./routes/index.routes'));
+app.use(require('./routes/routes.js'));
 
 module.exports = app;

@@ -1,0 +1,81 @@
+const userCtrl = {};
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const User = require('../models/User');
+
+userCtrl.login = passport.authenticate('local', {
+    successRedirect: '/home',
+    failureRedirect: '/login',
+    failureFlash: true
+})
+
+userCtrl.register = async(req, res) =>{
+    const errors = []
+    //const {username, name, firstLastName, secondLastName, email, password, confirmPassword, birthday} = req.body;
+
+    //console.log(file);
+    
+    //await userCtrl.upload(req, res);
+
+    //console.log(birthday);
+    const username = req.body.username;
+    const name = req.body.name;
+    const firstLastName = req.body.firstLastName;
+    const secondLastName = req.body.secondLastName;
+    const email = req.body.email;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+    const birthday = req.body.birthday;
+    //console.log(req.body.username);
+
+    if (password != confirmPassword) {
+        console.log('error')
+        //req.flash('error_msg', 'Passwords do not match');
+        errors.push({text: "Passwords do not match"})
+    }
+    if (password.length < 4){
+        console.log('error')
+        //req.flash('error_msg', 'Passwords must be at least 4 characters long');
+        errors.push({text: 'passwords must be at least 4 characters long'});
+    }
+    if (errors.length > 0){
+        res.render('register', {errors})
+    }
+    else{
+        const emailUser = await User.findOne({email: email});
+        const NewUsername = await User.findOne({username: username});
+        if (emailUser) {
+            req.flash('error_msg', 'Email already in use');
+            res.redirect('/register');
+        } else if (NewUsername){
+            req.flash('error_msg', 'Username already exists');
+            res.redirect('/register');
+        } else {
+            const newUser = new User ({username, name, firstLastName, secondLastName, email, password, birthday, picture});
+            newUser.password =  await newUser.encryptPassword(password)
+            await newUser.save();
+            req.flash('success_msg', 'User registered successfully');
+            res.redirect('/login');
+        }
+                    
+    }
+}
+
+userCtrl.renderLoginForm  = (req, res) =>{
+    console.log('ENTRANDO AL SIGN IN')
+    res.render('login');
+}
+
+userCtrl.renderRegisterForm  = (req, res) =>{
+    console.log('ENTRANDO AL REGISTER')
+    res.render('register');
+}
+
+userCtrl.logout = (req, res) =>{
+    req.logout();
+    req.flash('success_msg', 'User logged out');
+    console.log('Logging out')
+    res.redirect('/login');
+}
+
+module.exports = userCtrl;

@@ -1,0 +1,12 @@
+if (error.length)
+    .alert.alert-danger.alert-dismissible.fade.show(role='alert')
+        p.message= error
+        button.close(type='button' data-dismiss='alert' aria-label='Close')
+            span(aria-hidden='true') &times;
+
+if errors
+    each error in errors
+        .alert.alert-danger.alert-dismissible.fade.show(role='alert')
+            h4= error.text
+            button.close(type='button' data-dismiss='alert' aria-label='Close')
+                span(aria-hidden='true') &times;
