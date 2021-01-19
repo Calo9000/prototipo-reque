@@ -3,6 +3,8 @@ const {isAuthenticated} = require('../helpers/auth');
 
 const { renderLoginForm, 
         renderRegisterForm,
+        renderChangeForm,
+        cambiarContraseña,
         login, 
         register,
         logout
@@ -17,6 +19,11 @@ router.post('/login', login);
 router.get('/register', renderRegisterForm);
 
 router.post('/register', register);
+
+//cambiar contraseña
+router.get('/cambiar', renderChangeForm);
+
+router.post('/cambiar', cambiarContraseña);
 
 // LOGOUT
 router.get("/logout", logout);

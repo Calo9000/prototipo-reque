@@ -9,6 +9,12 @@ block content
         h2 bienvenido 
             span= username
 
+    a(href = '/logout' class= 'btn-lg btn-primary btn-block') Cerrar sesión
+
     if admin
         h3 Usuario inició sesión como administrador
         a(href = '/register' class= 'btn-lg btn-primary btn-block') Registrar un usuario
+
+        br
+
+        a(href = '/cambiar' class= 'btn-lg btn-primary btn-block') Cambiar contraseña a un usuario

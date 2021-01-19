@@ -64,6 +64,50 @@ userCtrl.register = async(req, res) =>{
     }
 }
 
+userCtrl.cambiarContraseña = async(req, res) =>{
+    const errors = []
+    //console.log(req);
+    //const {username, name, firstLastName, secondLastName, email, password, confirmPassword, birthday} = req.body;
+
+    //console.log(file);
+    
+    //await userCtrl.upload(req, res);
+
+    //console.log(birthday);
+    const username = req.body.username;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+    //console.log(admin);
+    //console.log(req.body.username);
+
+    if (password != confirmPassword) {
+        console.log('error')
+        //req.flash('error_msg', 'Passwords do not match');
+        errors.push({text: "Passwords do not match"})
+    }
+    if (password.length < 4){
+        console.log('error')
+        //req.flash('error_msg', 'Passwords must be at least 4 characters long');
+        errors.push({text: 'passwords must be at least 4 characters long'});
+    }
+    if (errors.length > 0){
+        res.render('register', {errors})
+    }
+    else{
+        const usuario = await User.findOne({username: username});
+        if (!usuario){
+            req.flash('error_msg', 'Usuario no encontrado');
+            res.redirect('/cambiar');
+        } else {
+            usuario.password =  await usuario.encryptPassword(password)
+            await usuario.save();
+            req.flash('success_msg', 'Contraseña actualizada');
+            res.redirect('/home');
+        }
+                    
+    }
+}
+
 userCtrl.renderLoginForm  = (req, res) =>{
     console.log('ENTRANDO AL SIGN IN')
     res.render('login');
@@ -72,6 +116,11 @@ userCtrl.renderLoginForm  = (req, res) =>{
 userCtrl.renderRegisterForm  = (req, res) =>{
     console.log('ENTRANDO AL REGISTER')
     res.render('register');
+}
+
+userCtrl.renderChangeForm  = (req, res) =>{
+    console.log('Entrando a cambiar contraseña')
+    res.render('cambiar');
 }
 
 userCtrl.logout = (req, res) =>{
