@@ -11,6 +11,7 @@ userCtrl.login = passport.authenticate('local', {
 
 userCtrl.register = async(req, res) =>{
     const errors = []
+    //console.log(req);
     //const {username, name, firstLastName, secondLastName, email, password, confirmPassword, birthday} = req.body;
 
     //console.log(file);
@@ -51,7 +52,8 @@ userCtrl.register = async(req, res) =>{
             req.flash('error_msg', 'Username already exists');
             res.redirect('/register');
         } else {
-            const newUser = new User ({username, name, firstLastName, secondLastName, email, password, birthday, picture});
+            let admin = true;
+            const newUser = new User ({username, name, firstLastName, secondLastName, email, password, birthday, admin});
             newUser.password =  await newUser.encryptPassword(password)
             await newUser.save();
             req.flash('success_msg', 'User registered successfully');

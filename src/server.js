@@ -1,4 +1,3 @@
-const port = 3000;
 const path = require('path');
 const logger = require('morgan');
 const express = require('express');
@@ -14,7 +13,7 @@ const { Http2ServerRequest } = require('http2');
 //App used-passport
 const app = express();
 app.set('port', process.env.PORT || 3000);
-//require('./config/passport')
+require('./config/passport')
 
 //View Engine
 app.set('views', path.join(__dirname, 'views'));
