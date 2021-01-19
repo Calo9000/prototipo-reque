@@ -6,5 +6,9 @@ block content
 
     body
         h1 Usuario inició sesión exitosamente
-        h2 bienvenido
+        h2 bienvenido 
             span= username
+
+    if admin
+        h3 Usuario inició sesión como administrador
+        a(href = '/register' class= 'btn-lg btn-primary btn-block') Registrar un usuario

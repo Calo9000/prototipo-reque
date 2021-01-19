@@ -27,6 +27,8 @@ userCtrl.register = async(req, res) =>{
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
     const birthday = req.body.birthday;
+    const admin = (req.body.admin != null);
+    //console.log(admin);
     //console.log(req.body.username);
 
     if (password != confirmPassword) {
@@ -46,17 +48,16 @@ userCtrl.register = async(req, res) =>{
         const emailUser = await User.findOne({email: email});
         const NewUsername = await User.findOne({username: username});
         if (emailUser) {
-            req.flash('error_msg', 'Email already in use');
+            req.flash('error_msg', 'Ya existe un usuario con ese correo electrónico');
             res.redirect('/register');
         } else if (NewUsername){
-            req.flash('error_msg', 'Username already exists');
+            req.flash('error_msg', 'Usuario con ese nombre ya existe');
             res.redirect('/register');
         } else {
-            let admin = true;
             const newUser = new User ({username, name, firstLastName, secondLastName, email, password, birthday, admin});
             newUser.password =  await newUser.encryptPassword(password)
             await newUser.save();
-            req.flash('success_msg', 'User registered successfully');
+            req.flash('success_msg', 'Usuario ha sido registrado');
             res.redirect('/login');
         }
                     

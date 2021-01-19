@@ -28,7 +28,7 @@ router.get('/', (req, res)=>{
 
 //  HOME
 router.get('/home', isAuthenticated, async(req, res)=>{
-    res.render('home', {username: req.user.username});
+    res.render('home', {username: req.user.username, admin: req.user.admin});
 });
 
 module.exports = router;
